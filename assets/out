@@ -1,0 +1,16 @@
+#!/bin/sh
+payload=$(mktemp /tmp/resource-in.XXXXXX)
+cat > $payload <&0
+
+#Exit immediately if a pipeline (https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin)
+set -e -u
+
+#https://concourse-ci.org/implementing-resource-types.html
+exec 3>&1 # make stdout available as fd 3 for the result 
+exec 1>&2 # redirect all output to stderr for logging 
+
+#start wrapper
+$(dirname $0)/wrapper/out.py $1 $payload
+
+#return expected version in JSON format
+printf '{"version": {}}' >&3

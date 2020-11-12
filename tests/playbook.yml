@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: Load config variables and vault secret
+      include_vars:
+        dir: vars
+        ignore_unknown_extensions: True
+        extensions: ['yml']
+    - name: ping
+      action: ping
+      register: debug
+    - debug:
+        var: debug
+    - name: Display variable from encrypted vault
+      debug:
+        var: vault_encoded
