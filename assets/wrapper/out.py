@@ -16,6 +16,11 @@ except OSError:
     print("Can't change the Current Working Directory")
     exit(1)
 
+os.environ['ANSIBLE_NOCOLOR'] = "1"
+os.environ['ANSIBLE_NOCOWS'] = "1"
+os.environ['ANSIBLE_HOST_KEY_CHECKING'] = "false"
+
+
 #if vault params present try to pass them to Ansible
 if 'vault' in data['params']:
     if 'inventory' in data['params']:
